@@ -1,13 +1,16 @@
 {
-  "name": "boxing",
+  "name": "template",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
+  "main": "dist/index.js",
   "scripts": {
     "lint": "tslint --project tsconfig.json",
     "pretest": "npm run lint",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
-    "posttest": "",
+    "pre:build": "npm cit",
+    "post:build": "rm dist/lambda.zip && zip -q -r dist/lambda.zip node_modules && zip -u -r dist/lambda.zip dist",
+    "cleanup:build": "npm ci",
+    "build": "npm run pre:build && tsc && npm prune --production && npm run post:build && npm run cleanup:build",
     "start": "node ./index.js"
   },
   "keywords": [],
@@ -20,6 +23,7 @@
     "@types/node": "^11.9.3",
     "@types/sinon": "^7.0.6",
     "@types/sinon-chai": "^3.2.2",
+    "@types/moment": "^2.13.0",
     "sinon-chai": "^3.3.0",
     "chai": "^4.2.0",
     "mocha": "^5.2.0",
@@ -31,5 +35,6 @@
     "typescript": "^3.3.3"
   },
   "dependencies": {
+    "moment": "^2.24.0"
   }
 }
