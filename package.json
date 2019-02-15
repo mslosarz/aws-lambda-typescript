@@ -8,7 +8,7 @@
     "pretest": "npm run lint",
     "test": "mocha -r ts-node/register test/**/*.spec.ts",
     "pre:build": "npm cit",
-    "post:build": "rm dist/lambda.zip && zip -q -r dist/lambda.zip node_modules && zip -u -r dist/lambda.zip dist",
+    "post:build": "rm dist/lambda.zip && zip -q -r dist/lambda.zip node_modules dist",
     "cleanup:build": "npm ci",
     "build": "npm run pre:build && tsc && npm prune --production && npm run post:build && npm run cleanup:build",
     "start": "node ./index.js"
