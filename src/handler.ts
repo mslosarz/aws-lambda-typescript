@@ -7,5 +7,3 @@ export const handler = async (event: APIGatewayProxyEvent): Promise<APIGatewayPr
     body: moment.utc().toISOString()
   }
 }
-
-// https://github.com/aws-samples/simple-websockets-chat-app/blob/master/onconnect/app.js
