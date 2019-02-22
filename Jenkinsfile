@@ -2,6 +2,7 @@
  * docker run --name jenkins_local -d -v jenkins_home:/var/jenkins_home -p 9000:8080 -p 50000:50000 jenkins/jenkins:lts
  * PLUGINS:
  *  - Pipeline: AWS Steps
+ *  - Groovy
  *
  * CREDENTIALS:
  *  - ADD Jenkins global credentials -> add PRIV_AWS_ACCESS (aws key / assigned to admin user)
@@ -26,6 +27,7 @@ pipeline {
     stage('Setup S3 Deployment bucket') {
       steps{
         script {
+          sh "aws cloudformation validate-template --template-body file://cfn/deployment/s3bucket.cfn.yaml"
           def response = cfnValidate(file:'cfn/deployment/s3bucket.cfn.yaml')
           echo "template description: ${response.description}"
         }
