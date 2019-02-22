@@ -24,10 +24,12 @@ pipeline {
 
   stages {
     stage('Setup S3 Deployment bucket') {
+      steps{
         script {
           def response = cfnValidate(file:'cfn/deployment/s3bucket.cfn.yaml')
           echo "template description: ${response.description}"
         }
+      }
     }
     stage('Test') {
       steps {
