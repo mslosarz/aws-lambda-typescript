@@ -19,7 +19,7 @@ pipeline {
   }
 
   parameters {
-    string(name: 'CREDENTIAL_ID', defaultValue: 'PRIV_AWS_ACCESS', description: 'Supply name of AWS_KEY (Stored on Jenkins)')
+    text(name: 'CREDENTIAL_ID', defaultValue: 'PRIV_AWS_ACCESS', description: 'Supply name of AWS_KEY (Stored on Jenkins)')
     choice(name: 'AWS_REGION', choices: 'eu-west-1\neu-west-2', description: 'Pick up region where app should be deployed (Ireland / London)')
   }
 
