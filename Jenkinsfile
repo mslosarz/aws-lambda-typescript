@@ -33,7 +33,8 @@ pipeline {
         }
       }
     }
-    stage('CloudFormation setup') {
+
+    stage('Setup s3 deployment bucket') {
       steps {
         script {
           functions.validateTemplate()
@@ -42,12 +43,15 @@ pipeline {
         }
       }
     }
-    stage('Test') {
+
+    stage('Copy Lambda code to S3 deployment bucket') {
       steps {
-        echo 'Testing..'
+        script {
+          functions.uploadLambdaCode()
+        }
       }
     }
-    stage('Deploy') {
+    stage('Test lambda') {
       steps {
         echo 'Deploying....'
       }

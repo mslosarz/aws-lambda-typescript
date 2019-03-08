@@ -1,0 +1,53 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: Template for typescript lambda
+Parameters:
+  Environment:
+    Type: String
+    Description: Environment name
+  DeploymentBucket:
+    Type: String
+    Description: Deployment bucket name
+  LambdaZipPath:
+    Type: String
+    Description: Path to zip file with lambda code (including build number etc)
+
+Resources:
+  TypescriptLambda:
+    Type: AWS::Lambda::Function
+    DependsOn:
+      - LambdaLogGroup
+    Properties:
+      FunctionName: !Sub '${Environment}-${AWS::Region}-typescript-lambda'
+      Description: Sample lambda written in typescript
+      Runtime: nodejs8.10
+      Code:
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: !Ref LambdaZipPath
+      Handler: dist/handler.handler
+      MemorySize: 128
+      Role: !Ref LambdaExecutionRole
+      Timeout: 10
+
+  LambdaLogGroup:
+    Type: AWS::Logs::LogGroup
+    Properties:
+      LogGroupName: !Sub '/aws/lambda/${TypescriptLambda}'
+      RetentionInDays: 3
+
+  LambdaExecutionRole:
+    Type: AWS::IAM::Role
+    Properties:
+      AssumeRolePolicyDocument:
+        Version: 2012-10-17
+        Statement:
+          - Effect: Allow
+            Principal:
+              Service: lambda.amazonaws.com
+            Action:
+              - sts:AssumeRole
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+
+Outputs:
+  TypescriptLambda:
+    Value: !Ref TypescriptLambda

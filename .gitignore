@@ -1,46 +1,8 @@
-# package directories
-node_modules
-
-### STS ###
-.apt_generated
-.classpath
-.factorypath
-.project
-.settings
-.springBeans
-.sts4-cache
-
 ### IntelliJ IDEA ###
 .idea
 *.iws
 *.iml
 *.ipr
-
-### Swagger code gen ###
-.swagger-codegen
-# Logs
-logs
-*.log
-npm-debug.log*
-
-# Dependency directories
-node_modules/
-
-# Optional npm cache directory
-.npm
-
-# Optional eslint cache
-.eslintcache
-
-# nyc test coverage
-coverage
-.nyc_output
-
-# JetBrains IDEs
-.idea
-
-# Git merge tool
-*.orig
 
 # Build dir
 dist
