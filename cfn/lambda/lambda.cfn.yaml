@@ -14,8 +14,6 @@ Parameters:
 Resources:
   TypescriptLambda:
     Type: AWS::Lambda::Function
-    DependsOn:
-      - LambdaLogGroup
     Properties:
       FunctionName: !Sub '${Environment}-${AWS::Region}-typescript-lambda'
       Description: Sample lambda written in typescript
