@@ -25,6 +25,8 @@ AWS should redirect you to lambda configuration page. Now to deploy your lambda 
 #There is also other way to do that!
 As you can see this project contains Jenkinsfile so you can easily build and deploy this lambda automatically!
 
+(If you don't have remote jenkins you can spin up your local copy you can find project [here](https://github.com/mslosarz/aws-jenkins))
+
 What needs to be done:
 1. create folder in your existing Jenkins e.g. dev/test/prod (it's very important because folder is used to distinguish environment)
 2. Inside folder create the pipeline job (with the name you want), and configure it to use jenkinsfile from this project
