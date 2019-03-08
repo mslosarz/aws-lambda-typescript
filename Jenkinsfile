@@ -1,35 +1,44 @@
 /**
- * docker run --name jenkins_local -d -v jenkins_home:/var/jenkins_home -p 9000:8080 -p 50000:50000 jenkins/jenkins:lts
- * PLUGINS:
- *  - Pipeline: AWS Steps
- *  - Groovy
- *
  * CREDENTIALS:
  *  - ADD Jenkins global credentials -> add PRIV_AWS_ACCESS (aws key / assigned to admin user)
  *  - ADD ssh key for Jenkins user (jenkins / github)
-  */
+ * CREATE FOLDER (name of folder will be used as an environment eg dev/test/prod)
+ *  - inside FOLDER create pipeline project that will points to this Jenkinsfile
+ */
 
+def functions
 
 pipeline {
   agent any
 
   options {
-    timeout(time: 15, unit: 'MINUTES')
+    timeout(time: 15, unit: "MINUTES")
     withAWS(region: "${params.AWS_REGION}")
+    withCredentials([[$class           : "AmazonWebServicesCredentialsBinding",
+                      credentialsId    : "${params.CREDENTIAL_ID}",
+                      accessKeyVariable: 'AWS_ACCESS_KEY_ID',
+                      secretKeyVariable: 'AWS_SECRET_ACCESS_KEY']])
   }
 
   parameters {
-    text(name: 'CREDENTIAL_ID', defaultValue: 'PRIV_AWS_ACCESS', description: 'Supply name of AWS_KEY (Stored on Jenkins)')
+    choice(name: 'CREDENTIAL_ID', choices: 'PRIV_AWS_ACCESS', description: 'Supply name of AWS_KEY (Stored on Jenkins)')
     choice(name: 'AWS_REGION', choices: 'eu-west-1\neu-west-2', description: 'Pick up region where app should be deployed (Ireland / London)')
   }
 
   stages {
-    stage('Setup S3 Deployment bucket') {
-      steps{
+    stage('Load functions') {
+      steps {
         script {
-          sh "aws cloudformation validate-template --template-body file://cfn/deployment/s3bucket.cfn.yaml"
-          def response = cfnValidate(file:'cfn/deployment/s3bucket.cfn.yaml')
-          echo "template description: ${response.description}"
+          functions = load(pwd() + '/build/functions.groovy')
+        }
+      }
+    }
+    stage('CloudFormation setup') {
+      steps {
+        script {
+          functions.validateTemplate()
+          functions.updateDeploymentBucket()
+          functions.uploadTemplates()
         }
       }
     }
