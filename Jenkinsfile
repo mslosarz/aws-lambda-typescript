@@ -68,7 +68,9 @@ pipeline {
 
     stage('Test deployed lambda') {
       steps {
-        functions.callAWSLambda()
+        script {
+          functions.callAWSLambda()
+        }
       }
     }
   }
