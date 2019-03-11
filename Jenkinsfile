@@ -47,8 +47,12 @@ pipeline {
     stage('Test and build deployment package') {
       steps {
         script {
+          // clean up old dist files
+          sh 'rm -fr dist/*'
           sh 'node -v'
           sh 'npm run build'
+          sh 'npm prune --production'
+          sh 'zip -q -r dist/lambda.zip node_modules dist'
         }
       }
     }

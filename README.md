@@ -3,7 +3,7 @@
 Here you can find template for AWS Lambda written in TS.
 
 To build project you need to type:
-`npm run build`
+`npm run all`
 Build process consists of:
   - linting project (TSLint)
   - running tests
