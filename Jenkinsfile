@@ -44,13 +44,23 @@ pipeline {
       }
     }
 
-    stage('Copy Lambda code to S3 deployment bucket') {
+    stage('Test and build deployment package') {
+      steps {
+        script {
+          sh 'node -v'
+          sh 'npm run build'
+        }
+      }
+    }
+
+    stage('Copy deployment package to S3 deployment bucket') {
       steps {
         script {
           functions.uploadLambdaCode()
         }
       }
     }
+
     stage('Test lambda') {
       steps {
         echo 'Deploying....'
