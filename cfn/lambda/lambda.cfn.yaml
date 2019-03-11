@@ -23,7 +23,7 @@ Resources:
         S3Key: !Ref LambdaZipPath
       Handler: dist/handler.handler
       MemorySize: 128
-      Role: !Ref LambdaExecutionRole
+      Role: !GetAtt LambdaExecutionRole.Arn
       Timeout: 10
 
   LambdaLogGroup:
