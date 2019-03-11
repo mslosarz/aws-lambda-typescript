@@ -55,13 +55,14 @@ def getLambdaName() {
 }
 
 def callAWSLambda() {
-  echo "-------------------------------------------------"
-  echo "Execution Result:"
-  echo invokeLambda(
+  def result = invokeLambda(
     functionName: getLambdaName(),
     payloadAsString: '{}',
     returnValueAsString: true
   )
+  echo "-------------------------------------------------"
+  echo "Execution Result:"
+  echo result
   echo "-------------------------------------------------"
 }
 
