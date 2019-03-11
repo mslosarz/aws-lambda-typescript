@@ -1,4 +1,4 @@
-AWSTemplateFormatVersion: '2010-09-09'
+AWSTemplateFormatVersion: 2010-09-09
 Description: Template for typescript lambda
 Parameters:
   Environment:
@@ -15,7 +15,7 @@ Resources:
   TypescriptLambda:
     Type: AWS::Lambda::Function
     Properties:
-      FunctionName: !Sub '${Environment}-${AWS::Region}-typescript-lambda'
+      FunctionName: !Sub ${Environment}-${AWS::Region}-typescript-lambda
       Description: Sample lambda written in typescript
       Runtime: nodejs8.10
       Code:
@@ -29,7 +29,7 @@ Resources:
   LambdaLogGroup:
     Type: AWS::Logs::LogGroup
     Properties:
-      LogGroupName: !Sub '/aws/lambda/${TypescriptLambda}'
+      LogGroupName: !Sub /aws/lambda/${TypescriptLambda}
       RetentionInDays: 3
 
   LambdaExecutionRole:
