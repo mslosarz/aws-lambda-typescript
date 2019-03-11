@@ -1,9 +1,9 @@
 // Environment name will be taken from the ROOT folder
-def env(){
+def env() {
   return env.JOB_NAME.replace("/${env.JOB_BASE_NAME}", '')
 }
 
-def validateTemplate() {
+def validateTemplates() {
   def templates = findFiles(glob: 'cfn/**')
   for (template in templates) {
     cfnValidate(file: template.getPath())
@@ -12,12 +12,16 @@ def validateTemplate() {
 
 def updateDeploymentBucket() {
   def envName = env()
-  cfnUpdate(stack: envName+'-deployment-bucket', file: 'cfn/deployment/s3bucket.cfn.yaml', params: ['BucketName': envName], timeoutInMinutes: 10, tags: ['Environment='+envName], pollInterval: 10000)
+  cfnUpdate(stack: "${envName}-deployment-bucket",
+    file: 'cfn/deployment/s3bucket.cfn.yaml',
+    params: ['BucketName': envName],
+    timeoutInMinutes: 10,
+    tags: ['Environment=' + envName],
+    pollInterval: 10000)
 }
 
 def getDeploymentBucketName() {
-  def envName = env()
-  return cfnDescribe(stack: envName+'-deployment-bucket').BucketName
+  return cfnDescribe(stack: "${env()}-deployment-bucket").BucketName
 }
 
 def getDeploymentPath() {
@@ -30,6 +34,20 @@ def uploadTemplates() {
 
 def uploadLambdaCode() {
   s3Upload(file: 'dist/lambda.zip', bucket: getDeploymentBucketName(), path: "${getDeploymentPath()}/lambda.zip")
+}
+
+def updateLambda() {
+  def envName = env()
+  cfnUpdate(stack: "${envName}-template-lambda",
+    file: 'cfn/lambda/lambda.cfn.yaml',
+    params: [
+      'Environment': envName,
+      'DeploymentBucket': getDeploymentBucketName(),
+      'LambdaZipPath': "${getDeploymentPath()}/lambda.zip"
+    ],
+    timeoutInMinutes: 10,
+    tags: ['Environment=' + envName],
+    pollInterval: 10000)
 }
 
 return this

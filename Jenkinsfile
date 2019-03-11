@@ -37,7 +37,7 @@ pipeline {
     stage('Setup s3 deployment bucket') {
       steps {
         script {
-          functions.validateTemplate()
+          functions.validateTemplates()
           functions.updateDeploymentBucket()
           functions.uploadTemplates()
         }
@@ -57,10 +57,11 @@ pipeline {
       }
     }
 
-    stage('Copy deployment package to S3 deployment bucket') {
+    stage('Copy deployment package to S3 and update lambda') {
       steps {
         script {
           functions.uploadLambdaCode()
+          functions.updateLambda()
         }
       }
     }
