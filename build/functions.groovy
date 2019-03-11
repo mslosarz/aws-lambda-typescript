@@ -21,15 +21,15 @@ def getDeploymentBucketName() {
 }
 
 def getDeploymentPath() {
-  return "artifacts/${env()}/${env.JOB_BASE_NAME}/${env.BUILD_NUMBER}/cfn"
+  return "artifacts/${env()}/${env.JOB_BASE_NAME}/${env.BUILD_NUMBER}"
 }
 
 def uploadTemplates() {
-  s3Upload(file: 'cfn', bucket: getDeploymentBucketName(), path: getDeploymentPath())
+  s3Upload(file: 'cfn', bucket: getDeploymentBucketName(), path: "${getDeploymentPath()}/cfn")
 }
 
 def uploadLambdaCode() {
-  s3Upload(file: 'dist/lambda.zip', bucket: getDeploymentBucketName(), path: getDeploymentPath())
+  s3Upload(file: 'dist/lambda.zip', bucket: getDeploymentBucketName(), path: "${getDeploymentPath()}/lambda.zip")
 }
 
 return this
