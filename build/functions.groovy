@@ -38,7 +38,7 @@ def uploadLambdaCode() {
 
 def updateLambda() {
   def envName = env()
-  cfnUpdate(stack: "${envName}-template-lambda",
+  cfnUpdate(stack: "${envName}-ts-lambda",
     file: 'cfn/lambda/lambda.cfn.yaml',
     params: [
       'Environment': envName,
@@ -48,6 +48,21 @@ def updateLambda() {
     timeoutInMinutes: 10,
     tags: ['Environment=' + envName],
     pollInterval: 10000)
+}
+
+def getLambdaName() {
+  return cfnDescribe(stack: "${env()}-ts-lambda").TypescriptLambda
+}
+
+def callAWSLambda() {
+  echo "-------------------------------------------------"
+  echo "Execution Result:"
+  echo invokeLambda(
+    functionName: getLambdaName(),
+    payloadAsString: '{}',
+    returnValueAsString: true
+  )
+  echo "-------------------------------------------------"
 }
 
 return this

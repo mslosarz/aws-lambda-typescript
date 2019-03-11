@@ -66,9 +66,9 @@ pipeline {
       }
     }
 
-    stage('Test lambda') {
+    stage('Test deployed lambda') {
       steps {
-        echo 'Deploying....'
+        functions.callAWSLambda()
       }
     }
   }
