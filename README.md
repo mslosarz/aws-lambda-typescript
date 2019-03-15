@@ -1,4 +1,4 @@
-# What is that?
+# What is this?
 
 Here you can find template for AWS Lambda written in TS.
 
@@ -22,7 +22,7 @@ AWS should redirect you to lambda configuration page. Now to deploy your lambda 
  
  That's all :) now you can enjoy playing with lambda written in TypeScript
  
-# There is also other way to do that!
+# There is another way to do that!
 As you can see this project contains Jenkinsfile so you can easily build and deploy this lambda automatically!
 
 (If you don't have remote jenkins you can spin up your local copy you can find project [here](https://github.com/mslosarz/aws-jenkins))
@@ -33,7 +33,8 @@ What needs to be done:
 3. Run build!
 
 
+# How to get rid of all created resources?
 
-
- 
+To clean up AWS resources you need to navigate AWS Console / cloudformation and delete two stacks `<env>-ts-lambda` and `<env>-deployment-bucket`. 
+S3 Bucket [will not be deleted automatically](https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/aws-attribute-deletionpolicy.html) so you need to remove it manual :(  
 
