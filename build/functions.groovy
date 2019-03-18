@@ -1,6 +1,6 @@
 // Environment name will be taken from the ROOT folder
 def env() {
-  return env.JOB_NAME.replace("/${env.JOB_BASE_NAME}", '')
+  return env.JOB_NAME.tokenize('/').get(0).toLowerCase()
 }
 
 def validateTemplates() {
@@ -41,9 +41,9 @@ def updateLambda() {
   cfnUpdate(stack: "${envName}-ts-lambda",
     file: 'cfn/lambda/lambda.cfn.yaml',
     params: [
-      'Environment': envName,
+      'Environment'     : envName,
       'DeploymentBucket': getDeploymentBucketName(),
-      'LambdaZipPath': "${getDeploymentPath()}/lambda.zip"
+      'LambdaZipPath'   : "${getDeploymentPath()}/lambda.zip"
     ],
     timeoutInMinutes: 10,
     tags: ['Environment=' + envName],
